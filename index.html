@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RMX Medical – Controle de estoque</title>
+  <meta name="description" content="Protótipo de controle de estoque feito para a RMX Medical no Projeto Integrador IV (ADS, Moura Lacerda).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="miolo topo-linha">
+    <a class="marca" href="#inicio">RMX Medical <span>Controle de estoque</span></a>
+    <nav aria-label="Seções">
+      <a href="#problema">O problema</a>
+      <a href="#prototipo">O protótipo</a>
+      <a href="#retorno">O retorno</a>
+      <a href="#equipe">Equipe</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <!-- Abertura -->
+  <section class="abertura miolo">
+    <div class="abertura-texto">
+      <p class="sobre">Projeto Integrador IV · ADS · Moura Lacerda</p>
+      <h1>Saber o que tem no estoque, e o que está acabando.</h1>
+      <p class="chamada">A RMX Medical vende equipamentos médicos e precisava de um jeito melhor de controlar o estoque. A gente fez um protótipo para isso e mostrou pro responsável.</p>
+      <p class="acoes">
+        <a class="botao" href="sistema/index.html">Abrir o protótipo</a>
+        <a class="link" href="rmx-codigo-fonte.zip" download>Baixar o código-fonte</a>
+      </p>
+    </div>
+
+    <figure class="painel" aria-label="Exemplo do que o protótipo mostra">
+      <figcaption class="painel-topo"><span>Estoque</span><span>dados de exemplo</span></figcaption>
+      <ul class="linhas">
+        <li class="repor"><span class="cod">RMX-002</span><span class="nome">Aparelho de pressão digital</span><span class="num">3<small>/4</small></span><span class="barra" style="--n:25%"></span></li>
+        <li class="repor"><span class="cod">RMX-003</span><span class="nome">Termômetro digital</span><span class="num">2<small>/5</small></span><span class="barra" style="--n:13%"></span></li>
+        <li><span class="cod">RMX-005</span><span class="nome">Estetoscópio</span><span class="num">6<small>/3</small></span><span class="barra" style="--n:67%"></span></li>
+        <li><span class="cod">RMX-004</span><span class="nome">Nebulizador</span><span class="num">8<small>/2</small></span><span class="barra" style="--n:100%"></span></li>
+        <li><span class="cod">RMX-001</span><span class="nome">Oxímetro de pulso</span><span class="num">12<small>/3</small></span><span class="barra" style="--n:100%"></span></li>
+      </ul>
+      <p class="painel-nota">Saldo / mínimo. A marca preta é o mínimo; em vermelho, o que precisa de reposição.</p>
+    </figure>
+  </section>
+
+  <!-- Problema -->
+  <section class="bloco miolo" id="problema">
+    <h2>O problema</h2>
+    <div class="duas">
+      <p>Tudo começou numa conversa com o pai do Italo, responsável pela RMX Medical. Ele contou que precisava de um sistema melhor para gerenciar o estoque da empresa.</p>
+      <p>Na conversa ele não detalhou a ferramenta que usa hoje, nem números de perdas ou de vendas. Por isso a gente não partiu de nenhum problema específico: começou pelo básico, que é saber quanto tem de cada equipamento e quando precisa repor.</p>
+    </div>
+  </section>
+
+  <!-- Protótipo -->
+  <section class="bloco miolo" id="prototipo">
+    <h2>O protótipo</h2>
+    <p class="intro">É uma página web simples. Dá pra cadastrar os equipamentos, registrar o que entra e o que sai, ver o saldo de cada item e ver na hora o que está no mínimo. Tudo com dados de exemplo.</p>
+
+    <div class="telas">
+      <figure class="tela larga">
+        <img src="img/tela-principal.png" alt="Tela principal do protótipo, com o resumo do estoque e a tabela de equipamentos" loading="lazy">
+        <figcaption><b>Tela principal.</b> Resumo no topo, tabela com saldo e mínimo, e uma barrinha que mostra o nível de cada item.</figcaption>
+      </figure>
+      <figure class="tela">
+        <img src="img/itens-a-repor.png" alt="Tela filtrada mostrando só os itens que precisam de reposição" loading="lazy">
+        <figcaption><b>Só o que precisa repor.</b> Um filtro mostra os itens no mínimo ou abaixo.</figcaption>
+      </figure>
+      <figure class="tela">
+        <img src="img/saida-recusada.png" alt="Aviso de saldo insuficiente ao tentar dar baixa em 99 unidades" loading="lazy">
+        <figcaption><b>Sem baixa a mais.</b> Se alguém tenta tirar mais do que existe, o sistema recusa e não grava nada.</figcaption>
+      </figure>
+      <figure class="tela celular">
+        <img src="img/celular.png" alt="O protótipo aberto na tela de um celular" loading="lazy">
+        <figcaption><b>No celular.</b> A página se adapta a telas pequenas.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Como foi feito</h3>
+    <div class="duas">
+      <div>
+        <p><b>Na tela:</b> HTML, CSS, JavaScript e Bootstrap. Os dados do protótipo ficam guardados no navegador.</p>
+        <p><b>No banco de dados:</b> MySQL, com duas tabelas ligadas, <code>produtos</code> e <code>movimentos</code>. Cada entrada ou saída atualiza o saldo e o histórico na mesma transação: ou grava tudo, ou não grava nada.</p>
+        <p>Este é o roteiro de consulta que lista os itens a repor:</p>
+      </div>
+      <div>
+        <pre><code>SELECT codigo, nome, quantidade, minimo
+  FROM produtos
+ WHERE quantidade &lt;= minimo
+ ORDER BY nome;</code></pre>
+        <figure class="print">
+          <img src="img/workbench-consulta.jpg" alt="Resultado da consulta de reposição no MySQL Workbench" loading="lazy">
+          <figcaption>A mesma consulta rodando no MySQL Workbench.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Retorno -->
+  <section class="bloco miolo" id="retorno">
+    <h2>O que o responsável achou</h2>
+    <div class="retorno">
+      <p class="dados">19/11/2026 · presencial · 1 pessoa</p>
+      <blockquote>
+        <p>Achou o sistema bem organizado, fácil de usar, e disse que ajuda no controle de entrada e saída dos equipamentos, além de avisar quando o estoque está baixo.</p>
+      </blockquote>
+      <p><b>Sugestão que ele deixou:</b> colocar um login para os funcionários.</p>
+      <p class="aviso">É um resumo do que foi dito durante a apresentação. Ele autorizou citar o nome da empresa.</p>
+    </div>
+  </section>
+
+  <!-- Próximos passos -->
+  <section class="bloco miolo" id="proximos">
+    <h2>O que fica pra depois</h2>
+    <ul class="lista">
+      <li>Login para os funcionários, como foi sugerido.</li>
+      <li>Ligar a página direto ao MySQL (hoje os dois seguem as mesmas regras, mas não estão conectados).</li>
+      <li>Editar e excluir cadastros, e controlar lote ou número de série, se a empresa precisar.</li>
+    </ul>
+    <p class="aviso">É um protótipo de faculdade, com dados de exemplo. Ainda não foi validado no dia a dia da empresa.</p>
+  </section>
+
+  <!-- Equipe -->
+  <section class="bloco miolo" id="equipe">
+    <h2>Quem fez</h2>
+    <p>Italo Foresti Martins Rosa, Gabriel Palmeiras e Guilherme Lorenzo.<br>
+    Tecnologia em Análise e Desenvolvimento de Sistemas, 4º semestre, Moura Lacerda, 2026.</p>
+    <p class="acoes">
+      <a class="botao" href="sistema/index.html">Abrir o protótipo</a>
+      <a class="link" href="rmx-codigo-fonte.zip" download>Baixar o código-fonte</a>
+    </p>
+  </section>
+</main>
+
+<footer class="miolo rodape">
+  Projeto Integrador IV · Moura Lacerda · Todos os dados exibidos são fictícios.
+</footer>
+
+</body>
+</html>

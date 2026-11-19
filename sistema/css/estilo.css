@@ -1,0 +1,83 @@
+:root {
+  --tinta: #1c2329;
+  --suave: #5d6a75;
+  --linha: #d5dbe0;
+  --fundo: #fbfbfc;
+  --acento: #1b5e7a;
+  --acento-escuro: #144860;
+  --alerta: #b42318;
+  --ok: #2f6f4f;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.num { font-family: Bahnschrift, "Segoe UI", system-ui, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Barra de topo: texto simples, sem gradiente */
+.barra { background: #fff; border-bottom: 2px solid var(--tinta); padding: 12px 0; }
+.marca { font-family: Bahnschrift, "Segoe UI", sans-serif; font-size: 1.25rem; letter-spacing: .01em; }
+.sistema { color: var(--suave); }
+.nota { color: var(--suave); font-size: .875rem; }
+
+h2 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .6rem; }
+.bloco { margin-bottom: 1.5rem; }
+.bloco + .bloco, .row > .bloco { padding-top: 1rem; border-top: 1px solid var(--linha); }
+
+.resumo { margin: 0 0 1rem; color: var(--tinta); }
+.resumo .num { font-size: 1.15rem; }
+.resumo .destaque { color: var(--alerta); }
+
+/* Campos: cantos quase retos, sem sombra */
+.form-label { font-size: .875rem; font-weight: 600; margin-bottom: .25rem; }
+.form-control, .form-select { border-radius: 3px; border-color: #aeb8c0; }
+.form-control:focus, .form-select:focus, .form-check-input:focus {
+  border-color: var(--acento); box-shadow: 0 0 0 3px rgba(27, 94, 122, .25);
+}
+.form-check-input:checked { background-color: var(--acento); border-color: var(--acento); }
+
+.btn { border-radius: 3px; font-weight: 600; }
+.btn-primario { background: var(--acento); border-color: var(--acento); color: #fff; }
+.btn-primario:hover { background: var(--acento-escuro); border-color: var(--acento-escuro); color: #fff; }
+.btn-secundario { background: #fff; border: 1px solid #aeb8c0; color: var(--tinta); }
+.btn-secundario:hover { border-color: var(--tinta); background: #fff; }
+.desfazer { color: var(--suave); font-weight: 400; }
+:focus-visible { outline: 3px solid #e0a100 !important; outline-offset: 2px; }
+
+/* Tabelas */
+.tabela { --bs-table-bg: transparent; }
+.tabela thead th {
+  font-size: .8rem; font-weight: 600; color: var(--suave);
+  border-bottom: 2px solid var(--tinta); white-space: nowrap;
+}
+.tabela td { border-bottom: 1px solid var(--linha); }
+.tabela tbody tr:hover td { background: #f1f4f6; }
+.codigo { font-family: Consolas, "Cascadia Mono", monospace; font-size: .9rem; color: var(--suave); }
+td.saldo { font-family: Bahnschrift, "Segoe UI", sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; }
+tr.repor td:first-child { box-shadow: inset 3px 0 0 var(--alerta); }
+tr.repor td.saldo, .situacao-repor { color: var(--alerta); }
+.situacao-ok { color: var(--ok); }
+.situacao-repor, .situacao-ok { font-weight: 600; }
+
+/* Marca do projeto: barra de nível do estoque em cada linha */
+.nivel { position: relative; width: 112px; height: 8px; background: #e3e8ec; }
+.nivel i { display: block; height: 100%; background: var(--acento); }
+.nivel.baixo i { background: var(--alerta); }
+.nivel::after { content: ""; position: absolute; left: 33.333%; top: -3px; bottom: -3px; width: 2px; background: var(--tinta); }
+
+.legenda { font-size: .82rem; color: var(--suave); margin: .5rem 0 0; }
+
+.mov-entrada { color: var(--acento); font-weight: 600; }
+.mov-saida { color: #8a5a00; font-weight: 600; }
+
+/* Aviso */
+#alerta .alert { border-radius: 3px; border-width: 0 0 0 4px; }
+
+@media (max-width: 576px) {
+  .barra { padding: 10px 0; }
+  .nivel { width: 80px; }
+}

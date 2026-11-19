@@ -1,0 +1,146 @@
+:root {
+  --papel: #fbfcfc;
+  --tinta: #15222b;
+  --suave: #54646f;
+  --linha: #d3dbe0;
+  --aco: #1b5e7a;
+  --aco-escuro: #144860;
+  --alerta: #b42318;
+  --fundo-cod: #eef2f4;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.miolo { width: min(1040px, 100% - 40px); margin-inline: auto; }
+
+a { color: var(--aco); }
+a:hover { color: var(--aco-escuro); }
+:focus-visible { outline: 3px solid #e0a100; outline-offset: 3px; }
+
+/* ---------- Topo ---------- */
+.topo { border-bottom: 2px solid var(--tinta); background: #fff; }
+.topo-linha { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; padding: 14px 0; }
+.marca { font-weight: 700; font-size: 1.15rem; text-decoration: none; color: var(--tinta); }
+.marca span { font-weight: 400; color: var(--suave); margin-left: 8px; }
+.topo nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
+.topo nav a { color: var(--suave); text-decoration: none; }
+.topo nav a:hover { color: var(--tinta); text-decoration: underline; }
+
+/* ---------- Abertura ---------- */
+.abertura {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+  padding: clamp(40px, 8vw, 88px) 0;
+}
+.sobre { margin: 0 0 14px; font-size: .9rem; color: var(--suave); letter-spacing: .02em; }
+h1 {
+  margin: 0 0 20px;
+  font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+.chamada { margin: 0 0 26px; font-size: 1.15rem; max-width: 33em; }
+.acoes { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+
+.botao {
+  display: inline-block;
+  padding: 13px 22px;
+  background: var(--aco);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 3px;
+}
+.botao:hover { background: var(--aco-escuro); color: #fff; }
+.link { font-weight: 700; }
+
+/* Painel: a "assinatura" da página, o mesmo indicador de nível usado no sistema */
+.painel { margin: 0; background: #fff; border: 1px solid var(--tinta); }
+.painel-topo { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--tinta); font-size: .85rem; color: var(--suave); }
+.painel-topo span:first-child { color: var(--tinta); font-weight: 700; }
+.linhas { list-style: none; margin: 0; padding: 0; }
+.linhas li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "cod cod num" "nome nome num" "barra barra barra";
+  gap: 2px 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--linha);
+}
+.linhas li:last-child { border-bottom: 0; }
+.linhas .cod { grid-area: cod; font-family: "IBM Plex Mono", Consolas, monospace; font-size: .78rem; color: var(--suave); }
+.linhas .nome { grid-area: nome; font-weight: 700; line-height: 1.25; }
+.linhas .num { grid-area: num; align-self: center; font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; font-size: 1.25rem; }
+.linhas .num small { font-size: .8rem; color: var(--suave); }
+.linhas .barra { grid-area: barra; position: relative; height: 8px; margin-top: 8px; background: #e3e8ec; }
+.linhas .barra::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--n); background: var(--aco); }
+.linhas .barra::after { content: ""; position: absolute; left: 33.333%; top: -3px; bottom: -3px; width: 2px; background: var(--tinta); }
+.linhas .repor { box-shadow: inset 4px 0 0 var(--alerta); }
+.linhas .repor .num { color: var(--alerta); }
+.linhas .repor .barra::before { background: var(--alerta); }
+.painel-nota { margin: 0; padding: 10px 16px 12px; border-top: 1px solid var(--tinta); font-size: .82rem; color: var(--suave); }
+
+/* ---------- Blocos ---------- */
+.bloco { padding: clamp(36px, 6vw, 64px) 0; border-top: 1px solid var(--linha); }
+h2 { margin: 0 0 22px; font-size: 1.5rem; line-height: 1.2; }
+h3 { margin: 44px 0 16px; font-size: 1.2rem; }
+.intro { max-width: 40em; margin: 0 0 32px; }
+.duas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px clamp(24px, 4vw, 56px); }
+.duas p { margin: 0 0 14px; }
+
+/* ---------- Telas ---------- */
+.telas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.tela { margin: 0; }
+.tela.larga { grid-column: 1 / -1; }
+.tela img, .print img { display: block; width: 100%; height: auto; border: 1px solid var(--tinta); background: #fff; }
+.tela:not(.larga):not(.celular) img { aspect-ratio: 4 / 3; object-fit: cover; object-position: top; }
+.tela.celular { justify-self: start; max-width: 260px; }
+figcaption { margin-top: 10px; font-size: .92rem; color: var(--suave); line-height: 1.45; }
+figcaption b { color: var(--tinta); }
+.print { margin: 18px 0 0; }
+
+pre {
+  margin: 0;
+  padding: 16px 18px;
+  background: var(--fundo-cod);
+  border-left: 4px solid var(--aco);
+  overflow-x: auto;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+code { font-family: "IBM Plex Mono", Consolas, monospace; font-size: .9em; }
+p code { background: var(--fundo-cod); padding: 1px 6px; }
+
+/* ---------- Retorno ---------- */
+.retorno { max-width: 44em; }
+.dados { margin: 0 0 10px; font-family: "IBM Plex Mono", Consolas, monospace; font-size: .85rem; color: var(--suave); }
+blockquote { margin: 0 0 18px; padding: 4px 0 4px 20px; border-left: 4px solid var(--aco); font-size: 1.2rem; }
+blockquote p { margin: 0; }
+.aviso { color: var(--suave); font-size: .92rem; margin: 14px 0 0; }
+
+.lista { margin: 0; padding-left: 1.2em; max-width: 44em; }
+.lista li { margin-bottom: 8px; }
+
+.rodape { padding: 28px 0 44px; border-top: 1px solid var(--linha); font-size: .88rem; color: var(--suave); }
+
+/* ---------- Celular ---------- */
+@media (max-width: 800px) {
+  body { font-size: 17px; }
+  .abertura, .duas, .telas { grid-template-columns: minmax(0, 1fr); }
+  .tela.larga { grid-column: auto; }
+  .tela.celular { max-width: 220px; }
+}
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

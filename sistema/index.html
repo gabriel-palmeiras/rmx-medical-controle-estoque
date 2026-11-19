@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RMX Medical – Controle de estoque</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="container d-flex flex-wrap align-items-baseline gap-2 gap-md-3">
+      <strong class="marca">RMX Medical</strong>
+      <span class="sistema">Controle de estoque</span>
+      <span class="ms-md-auto nota">Protótipo acadêmico, com dados fictícios</span>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    <div id="alerta" role="alert" aria-live="polite"></div>
+
+    <section aria-labelledby="t-estoque" class="bloco">
+      <h2 id="t-estoque">Estoque</h2>
+      <p class="resumo">
+        <span id="r-itens" class="num">0</span> equipamentos,
+        <span id="r-unidades" class="num">0</span> unidades em estoque,
+        <span id="r-repor" class="num destaque">0</span> no mínimo ou abaixo.
+      </p>
+
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-6">
+          <label for="busca" class="form-label">Buscar por nome ou código</label>
+          <input id="busca" type="search" class="form-control" placeholder="oxímetro, RMX-001...">
+        </div>
+        <div class="col-7 col-md-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="so-repor">
+            <label class="form-check-label" for="so-repor">Mostrar só itens a repor</label>
+          </div>
+        </div>
+        <div class="col-5 col-md-3 text-end">
+          <button id="exportar" type="button" class="btn btn-secundario">Baixar CSV</button>
+        </div>
+      </div>
+
+      <div class="table-responsive mt-3">
+        <table class="table tabela align-middle mb-1">
+          <thead>
+            <tr>
+              <th scope="col">Código</th><th scope="col">Equipamento</th><th scope="col">Categoria</th>
+              <th scope="col" class="text-end">Saldo</th><th scope="col" class="text-end">Mínimo</th>
+              <th scope="col">Nível</th><th scope="col">Situação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela"></tbody>
+        </table>
+      </div>
+      <p class="legenda">Nível: a marca preta é o estoque mínimo; a barra cheia equivale a 3 vezes o mínimo. Itens com saldo igual ou abaixo do mínimo ficam em vermelho.</p>
+    </section>
+
+    <div class="row g-4">
+      <section class="col-12 col-lg-6 bloco" aria-labelledby="t-mov">
+        <h2 id="t-mov">Movimentar estoque</h2>
+        <form id="form-mov" novalidate>
+          <div class="row g-2">
+            <div class="col-12"><label class="form-label" for="m-produto">Equipamento</label>
+              <select id="m-produto" class="form-select" required></select></div>
+            <div class="col-6"><label class="form-label" for="m-tipo">Movimento</label>
+              <select id="m-tipo" class="form-select"><option value="ENTRADA">Entrada</option><option value="SAIDA">Saída</option></select></div>
+            <div class="col-6"><label class="form-label" for="m-qtd">Quantidade</label>
+              <input id="m-qtd" type="number" min="1" step="1" value="1" class="form-control" required></div>
+            <div class="col-12"><label class="form-label" for="m-obs">Observação (opcional)</label>
+              <input id="m-obs" class="form-control" maxlength="120" placeholder="compra, venda, devolução..."></div>
+          </div>
+          <button class="btn btn-primario mt-3" type="submit">Registrar movimento</button>
+        </form>
+      </section>
+
+      <section class="col-12 col-lg-6 bloco" aria-labelledby="t-cad">
+        <h2 id="t-cad">Cadastrar equipamento</h2>
+        <form id="form-produto" novalidate>
+          <div class="row g-2">
+            <div class="col-6"><label class="form-label" for="p-codigo">Código</label>
+              <input id="p-codigo" class="form-control" maxlength="20" required placeholder="RMX-006"></div>
+            <div class="col-6"><label class="form-label" for="p-categoria">Categoria</label>
+              <input id="p-categoria" class="form-control" maxlength="40" required></div>
+            <div class="col-12"><label class="form-label" for="p-nome">Nome</label>
+              <input id="p-nome" class="form-control" maxlength="80" required></div>
+            <div class="col-6"><label class="form-label" for="p-saldo">Saldo inicial</label>
+              <input id="p-saldo" type="number" min="0" step="1" value="0" class="form-control" required></div>
+            <div class="col-6"><label class="form-label" for="p-minimo">Estoque mínimo</label>
+              <input id="p-minimo" type="number" min="0" step="1" value="0" class="form-control" required></div>
+          </div>
+          <button class="btn btn-primario mt-3" type="submit">Cadastrar equipamento</button>
+        </form>
+      </section>
+    </div>
+
+    <section class="bloco mt-4" aria-labelledby="t-hist">
+      <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2">
+        <h2 id="t-hist" class="mb-0">Histórico</h2>
+        <button id="restaurar" type="button" class="btn btn-link btn-sm p-0 desfazer">Voltar aos dados de demonstração</button>
+      </div>
+      <div class="table-responsive mt-2">
+        <table class="table tabela table-sm align-middle mb-0">
+          <thead><tr><th scope="col">Data</th><th scope="col">Equipamento</th><th scope="col">Movimento</th><th scope="col" class="text-end">Qtd.</th><th scope="col">Observação</th></tr></thead>
+          <tbody id="historico"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container pb-4 nota">
+    Projeto Integrador IV · Moura Lacerda.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
