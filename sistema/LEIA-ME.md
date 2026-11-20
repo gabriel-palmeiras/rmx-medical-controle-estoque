@@ -1,13 +1,13 @@
 # RMX Medical – Controle de estoque (Projeto Integrador IV)
 
-Protótipo acadêmico com dados FICTÍCIOS. Duas partes: a página web e os scripts MySQL.
+Protótipo de faculdade, com dados fictícios. Tem duas partes: a página web e os scripts MySQL.
 
 ## 1) Página web (HTML, CSS, JavaScript e Bootstrap)
 1. Descompacte o arquivo.
 2. Abra a pasta `rmx-estoque` e dê dois cliques em `index.html` (Chrome, Edge ou Firefox).
    Não precisa instalar nada nem ter internet. Os dados ficam salvos no navegador.
 
-Como verificar a funcionalidade principal:
+Para testar:
 - Resumo no topo: 5 equipamentos, 31 unidades, 2 precisam de reposição.
 - Digite "oxímetro" na busca, ou marque "Mostrar só itens a repor".
 - Em "Movimentar estoque", escolha o Oxímetro, tipo Saída, quantidade 99: aparece "Saldo insuficiente" e nada é gravado.
@@ -27,5 +27,5 @@ Os blocos de `3_` e `4_` devem ser executados um por vez (selecione o trecho e u
 Alguns comandos do script 4 geram ERRO de propósito, para mostrar que as regras funcionam.
 
 ## Observação
-A página guarda os dados no navegador e aplica as mesmas regras do banco; a ligação direta entre a página e o MySQL
-(que exigiria um servidor) fica como próximo passo.
+A página guarda os dados no navegador e segue as mesmas regras do banco, mas as duas partes não estão ligadas.
+Ligar a página ao MySQL precisaria de um servidor, e deixamos isso como próximo passo.

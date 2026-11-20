@@ -68,28 +68,28 @@
     <div class="telas">
       <figure class="tela larga">
         <img src="img/tela-principal.png" alt="Tela principal do protótipo, com o resumo do estoque e a tabela de equipamentos" loading="lazy">
-        <figcaption><b>Tela principal.</b> Resumo no topo, tabela com saldo e mínimo, e uma barrinha que mostra o nível de cada item.</figcaption>
+        <figcaption>Tela principal: resumo no topo, tabela com saldo e mínimo e uma barrinha com o nível de cada item.</figcaption>
       </figure>
       <figure class="tela">
         <img src="img/itens-a-repor.png" alt="Tela filtrada mostrando só os itens que precisam de reposição" loading="lazy">
-        <figcaption><b>Só o que precisa repor.</b> Um filtro mostra os itens no mínimo ou abaixo.</figcaption>
+        <figcaption>Filtro que mostra só os itens no mínimo ou abaixo.</figcaption>
       </figure>
       <figure class="tela">
         <img src="img/saida-recusada.png" alt="Aviso de saldo insuficiente ao tentar dar baixa em 99 unidades" loading="lazy">
-        <figcaption><b>Sem baixa a mais.</b> Se alguém tenta tirar mais do que existe, o sistema recusa e não grava nada.</figcaption>
+        <figcaption>Tentando tirar mais do que existe, o sistema recusa e não grava nada.</figcaption>
       </figure>
       <figure class="tela celular">
         <img src="img/celular.png" alt="O protótipo aberto na tela de um celular" loading="lazy">
-        <figcaption><b>No celular.</b> A página se adapta a telas pequenas.</figcaption>
+        <figcaption>A página também funciona no celular.</figcaption>
       </figure>
     </div>
 
     <h3>Como foi feito</h3>
     <div class="duas">
       <div>
-        <p><b>Na tela:</b> HTML, CSS, JavaScript e Bootstrap. Os dados do protótipo ficam guardados no navegador.</p>
-        <p><b>No banco de dados:</b> MySQL, com duas tabelas ligadas, <code>produtos</code> e <code>movimentos</code>. Cada entrada ou saída atualiza o saldo e o histórico na mesma transação: ou grava tudo, ou não grava nada.</p>
-        <p>Este é o roteiro de consulta que lista os itens a repor:</p>
+        <p>A parte da tela é feita com HTML, CSS, JavaScript e Bootstrap. Os dados do protótipo ficam guardados no navegador.</p>
+        <p>O banco de dados é MySQL, com duas tabelas ligadas, <code>produtos</code> e <code>movimentos</code>. Cada entrada ou saída atualiza o saldo e o histórico na mesma transação, então ou grava tudo ou não grava nada.</p>
+        <p>Esta é a consulta que lista os itens a repor:</p>
       </div>
       <div>
         <pre><code>SELECT codigo, nome, quantidade, minimo
@@ -112,8 +112,8 @@
       <blockquote>
         <p>Achou o sistema bem organizado, fácil de usar, e disse que ajuda no controle de entrada e saída dos equipamentos.</p>
       </blockquote>
-      <p><b>Sugestão que ele deixou:</b> colocar um login para os funcionários.</p>
-      <p class="aviso">É um resumo do que foi dito durante a apresentação. Ele autorizou citar o nome da empresa.</p>
+      <p>Ele sugeriu colocar um login para os funcionários.</p>
+      <p class="aviso">É um resumo do que ele disse na apresentação. Ele autorizou citar o nome da empresa.</p>
     </div>
   </section>
 
@@ -122,7 +122,7 @@
     <h2>O que fica pra depois</h2>
     <ul class="lista">
       <li>Login para os funcionários, como foi sugerido.</li>
-      <li>Ligar a página direto ao MySQL (hoje os dois seguem as mesmas regras, mas não estão conectados).</li>
+      <li>Ligar a página ao MySQL. Hoje os dados ficam só no navegador e o banco é uma parte separada, com as mesmas regras.</li>
       <li>Controlar lote ou número de série, se a empresa precisar.</li>
     </ul>
     <p class="aviso">É um protótipo de faculdade, com dados de exemplo. Ainda não foi validado no dia a dia da empresa.</p>
