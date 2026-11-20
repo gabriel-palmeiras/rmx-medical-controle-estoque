@@ -13,6 +13,7 @@ Como verificar a funcionalidade principal:
 - Em "Movimentar estoque", escolha o Oxímetro, tipo Saída, quantidade 99: aparece "Saldo insuficiente" e nada é gravado.
 - Repita com quantidade 2: o saldo vai de 12 para 10 e a saída aparece no histórico.
 - Cadastre um equipamento novo; tente repetir o mesmo código (é recusado).
+- Em cada linha, "Editar" altera código, nome, categoria e mínimo (o saldo só muda por movimento); "Excluir" é recusado se o item já tem movimentos (como a chave estrangeira do banco). Cadastre um item com saldo 0 e exclua: funciona.
 - "Baixar CSV" baixa a lista; "Voltar aos dados de demonstração" volta ao início.
 
 ## 2) Banco de dados (MySQL 8.0.16 ou superior, no MySQL Workbench)

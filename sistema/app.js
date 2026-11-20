@@ -61,6 +61,32 @@ function cadastrar({ codigo, nome, categoria, minimo, saldo }) {
   banco = novo; gravar();
 }
 
+// Equivale a UPDATE produtos SET codigo, nome, categoria, minimo. O saldo não muda aqui: só por movimento.
+function editar(id, { codigo, nome, categoria, minimo }) {
+  codigo = String(codigo || "").trim().toUpperCase();
+  nome = String(nome || "").trim();
+  categoria = String(categoria || "").trim();
+  if (!banco.produtos.some((x) => x.id === id)) throw new ErroRegra("Equipamento inexistente.");
+  if (!codigo || !nome || !categoria) throw new ErroRegra("Preencha código, nome e categoria.");
+  if (!inteiroNaoNegativo(minimo)) throw new ErroRegra("O mínimo deve ser um número inteiro, sem negativos.");
+  if (banco.produtos.some((x) => x.codigo === codigo && x.id !== id)) throw new ErroRegra(`O código ${codigo} já está cadastrado.`);
+  const novo = JSON.parse(JSON.stringify(banco));
+  Object.assign(novo.produtos.find((x) => x.id === id), { codigo, nome, categoria, minimo });
+  banco = novo; gravar();
+}
+
+// Equivale a DELETE FROM produtos, que no MySQL falha (ON DELETE RESTRICT) se já existe movimento do item.
+function excluir(id) {
+  const p = banco.produtos.find((x) => x.id === id);
+  if (!p) throw new ErroRegra("Equipamento inexistente.");
+  if (banco.movimentos.some((m) => m.produto_id === id)) {
+    throw new ErroRegra(`${p.nome} não pode ser excluído: já tem movimentos no histórico. Só dá para excluir um cadastro que nunca teve movimento (por exemplo, um cadastro feito por engano com saldo 0).`);
+  }
+  const novo = JSON.parse(JSON.stringify(banco));
+  novo.produtos = novo.produtos.filter((x) => x.id !== id);
+  banco = novo; gravar();
+}
+
 function movimentar(produtoId, tipo, quantidade, observacao) {
   const p = banco.produtos.find((x) => x.id === produtoId);
   if (!p) throw new ErroRegra("Equipamento inexistente.");
@@ -126,7 +152,7 @@ function desenhar() {
   if (!lista.length) {
     const tr = document.createElement("tr");
     const td = celula(tr, "Nenhum equipamento encontrado.", "text-center text-secondary py-4");
-    td.colSpan = 7;
+    td.colSpan = 8;
     tb.appendChild(tr);
   }
   lista.forEach((p) => {
@@ -149,6 +175,15 @@ function desenhar() {
     tdNivel.appendChild(barra);
 
     celula(tr, baixo ? "Repor" : "Em dia", baixo ? "situacao-repor" : "situacao-ok");
+
+    const tdAcoes = celula(tr, "", "acoes text-end text-nowrap");
+    [["Editar", "editar"], ["Excluir", "excluir"]].forEach(([texto, acao]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = texto; b.dataset.acao = acao; b.dataset.id = p.id;
+      b.className = "btn btn-link btn-sm p-0 ms-2 " + (acao === "excluir" ? "link-excluir" : "");
+      b.setAttribute("aria-label", `${texto} ${p.nome}`);
+      tdAcoes.appendChild(b);
+    });
     tb.appendChild(tr);
   });
 
@@ -196,13 +231,59 @@ function tratar(acao, msgOk) {
 $("busca").addEventListener("input", desenhar);
 $("so-repor").addEventListener("change", desenhar);
 
+// Quando editandoId tem um número, o formulário de cadastro está em modo de edição.
+let editandoId = null;
+
+function modoEdicao(p) {
+  editandoId = p ? p.id : null;
+  $("t-cad").textContent = p ? "Editar equipamento" : "Cadastrar equipamento";
+  $("btn-salvar").textContent = p ? "Salvar alterações" : "Cadastrar equipamento";
+  $("cancelar-edicao").hidden = !p;
+  $("p-saldo").disabled = !!p;
+  $("dica-saldo").hidden = !p;
+  if (p) {
+    $("p-codigo").value = p.codigo; $("p-nome").value = p.nome; $("p-categoria").value = p.categoria;
+    $("p-minimo").value = p.minimo; $("p-saldo").value = p.quantidade;
+  } else {
+    $("form-produto").reset();
+  }
+}
+
 $("form-produto").addEventListener("submit", (e) => {
   e.preventDefault();
+  if (editandoId !== null) {
+    const id = editandoId;
+    const ok = tratar(() => editar(id, {
+      codigo: $("p-codigo").value, nome: $("p-nome").value, categoria: $("p-categoria").value,
+      minimo: Number($("p-minimo").value),
+    }), () => `Equipamento atualizado: ${$("p-nome").value.trim()}.`);
+    if (ok) modoEdicao(null);
+    return;
+  }
   const ok = tratar(() => cadastrar({
     codigo: $("p-codigo").value, nome: $("p-nome").value, categoria: $("p-categoria").value,
     minimo: Number($("p-minimo").value), saldo: Number($("p-saldo").value),
   }), () => `Equipamento cadastrado: ${$("p-nome").value.trim()}.`);
   if (ok) e.target.reset();
+});
+
+$("cancelar-edicao").addEventListener("click", () => { modoEdicao(null); aviso("", "info"); });
+
+$("tabela").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-acao]");
+  if (!b) return;
+  const id = Number(b.dataset.id);
+  const p = banco.produtos.find((x) => x.id === id);
+  if (!p) return;
+  if (b.dataset.acao === "editar") {
+    modoEdicao(p); aviso("", "info");
+    $("form-produto").scrollIntoView({ behavior: "smooth", block: "center" });
+    $("p-nome").focus();
+    return;
+  }
+  if (!window.confirm(`Excluir o cadastro de ${p.nome} (${p.codigo})?`)) return;
+  tratar(() => excluir(id), `Equipamento excluído: ${p.nome}.`);
+  if (editandoId === id) modoEdicao(null);
 });
 
 $("form-mov").addEventListener("submit", (e) => {
@@ -221,7 +302,7 @@ $("exportar").addEventListener("click", () => {
 });
 
 $("restaurar").addEventListener("click", () => {
-  banco = DEMO(); gravar(); aviso("Dados de demonstração restaurados.", "info"); desenhar();
+  banco = DEMO(); gravar(); modoEdicao(null); aviso("Dados de demonstração restaurados.", "info"); desenhar();
 });
 
 desenhar();
